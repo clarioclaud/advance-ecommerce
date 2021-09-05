@@ -23,6 +23,7 @@ use App\Http\Controllers\backend\CouponController;
 use App\Http\Controllers\backend\ShippingDivisionController;
 use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\ReportController;
+use App\Http\Controllers\Frontend\HomeBlogController;
 use App\Models\User;
 
 /*
@@ -310,6 +311,11 @@ Route::prefix('blog')->group(function(){
     Route::get('/post/view', [BlogController::class,'BlogPostView'])->name('blog.post.list');
     Route::post('/post/store', [BlogController::class,'BlogPostStore'])->name('store.blogpost');
     Route::get('/post/edit/{id}', [BlogController::class,'BlogEdit'])->name('blog.edit');
-    Route::post('/post/store', [BlogController::class,'BlogPostUpdate'])->name('update.blogpost');
+    Route::post('/post/update', [BlogController::class,'BlogPostUpdate'])->name('update.blogpost');
     Route::get('/post/delete/{id}', [BlogController::class,'BlogDelete'])->name('blog.delete');
 });
+
+// Frontend blog
+Route::get('/blog', [HomeBlogController::class,'AddBlogList'])->name('home.blog');
+Route::get('/blog/post/details/{id}', [HomeBlogController::class,'BlogDetails'])->name('blog.details');
+Route::get('/blog/category/{category_id}', [HomeBlogController::class,'BlogCategoryDetails']);
