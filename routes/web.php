@@ -11,6 +11,8 @@ use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\BlogController;
+use App\Http\Controllers\backend\SiteSettingController;
+use App\Http\Controllers\backend\ReturnController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\CartpageController;
@@ -319,3 +321,20 @@ Route::prefix('blog')->group(function(){
 Route::get('/blog', [HomeBlogController::class,'AddBlogList'])->name('home.blog');
 Route::get('/blog/post/details/{id}', [HomeBlogController::class,'BlogDetails'])->name('blog.details');
 Route::get('/blog/category/{category_id}', [HomeBlogController::class,'BlogCategoryDetails']);
+
+
+//admin blog management routes
+Route::prefix('site')->group(function(){
+    Route::get('/settings', [SiteSettingController::class,'SiteSetting'])->name('manage.site.settings');
+    Route::post('/settings/update', [SiteSettingController::class,'SiteSettingUpdate'])->name('site.setting.update');
+    Route::get('/seo', [SiteSettingController::class,'SeoSetting'])->name('manage.seo.settings');
+    Route::post('/seo/update', [SiteSettingController::class,'SeoSettingUpdate'])->name('seo.setting.update');
+});
+
+
+//admin return request management routes
+Route::prefix('return')->group(function(){
+    Route::get('/admin/request', [ReturnController::class,'ReturnOrders'])->name('manage.return.request');
+    Route::get('/admin/return/approve/{id}', [ReturnController::class,'ReturnOrdersApprove'])->name('return.order.approve');
+    Route::get('/all/request', [ReturnController::class,'AllReturnOrders'])->name('all.return.request');
+});

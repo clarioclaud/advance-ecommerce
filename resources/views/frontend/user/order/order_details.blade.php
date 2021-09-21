@@ -135,21 +135,21 @@
             @if($order->status !== "delivered")
 
             @else
-            @php
-                $order = App\Models\Order::where('id',$order->id)->where('user_id',Auth::id())->where('return_reason','=','NULL')->first();
-            @endphp
-            @if($order)
-            <form action="{{ route('return.reason',$order->id) }}" method="post">
-                @csrf
-            <div class="form-group">
-                <label for="label">Order Return Reason</label>
-                <textarea class="form-control" name="return_reason" id="" cols="30" rows="05">Return Reason</textarea>
-            </div>
-            <button type="submit" name="submit" class="btn btn-danger">Submit</button>
-            </form >
-            @else
-                <span class="badge badge-pill badge-warning" style="background:red;">You Have Send Return Order Request For This Product</span>
-            @endif
+                @php
+                    $order = App\Models\Order::where('id',$order->id)->where('user_id',Auth::id())->where('return_reason','=',NULL)->first();
+                @endphp
+                @if($order)
+                <form action="{{ route('return.reason',$order->id) }}" method="post">
+                    @csrf
+                <div class="form-group">
+                    <label for="label">Order Return Reason</label>
+                    <textarea class="form-control" name="return_reason" id="" cols="30" rows="05">Return Reason</textarea>
+                </div>
+                <button type="submit" name="submit" class="btn btn-danger">Submit</button>
+                </form >
+                @else
+                    <span class="badge badge-pill badge-warning" style="background:red;">You Have Send Return Order Request For This Product</span>
+                @endif
             @endif
             <br><br>
         </div><!--End row--->

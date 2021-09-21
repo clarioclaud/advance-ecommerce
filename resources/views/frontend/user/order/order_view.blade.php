@@ -28,7 +28,27 @@
                                 <td class="col-md-2"><label for="">${{ $item->amount }}</label></td>
                                 <td class="col-md-2"><label for="">{{ $item->payment_method }}</label></td>
                                 <td class="col-md-2"><label for="">{{ $item->invoice_no }}</label></td>
-                                <td class="col-md-2"><label for=""><span class="badge badge-pill badge-warning" style="background:#4e7ee9">{{ $item->status }}</span></td>
+                                <td class="col-md-2"><label for="">
+                                    @if( $item->status == 'pending')
+                                    <span class="badge badge-pill badge-warning" style="background:#4E54CB">Pending</span>
+                                    @elseif($item->status == 'confirm')
+                                    <span class="badge badge-pill badge-warning" style="background:#4F9B34">Confirm</span>
+                                    @elseif($item->status == 'processing')
+                                    <span class="badge badge-pill badge-warning" style="background:#C7D334">Processing</span>
+                                    @elseif($item->status == 'picked')
+                                    <span class="badge badge-pill badge-warning" style="background:#751F66">Picked</span>
+                                    @elseif($item->status == 'shipped')
+                                    <span class="badge badge-pill badge-warning" style="background:#D1921E">Shipped</span>
+                                    @elseif($item->status == 'delivered')
+                                    <span class="badge badge-pill badge-warning" style="background:#2ED11E">Delivered</span>
+                                    @if($item->return_order == 1)
+                                    <span class="badge badge-pill badge-warning" style="background:red">Return Order Requested</span>
+                                    @endif
+                                    @else
+                                    <span class="badge badge-pill badge-warning" style="background:#D11E2E">Cancel</span>
+                                    @endif
+                                    
+                                </td>
                                 <td class="col-md-3"><label for="">
                                         <a href="{{ url('/user/order/view/'.$item->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>
                                         <a target="_blank" href="{{ url('/user/invoice/download/'.$item->id) }}" class="btn btn-sm btn-danger" style="margin-top:5px"><i class="fa fa-download"></i>Invoice</a>

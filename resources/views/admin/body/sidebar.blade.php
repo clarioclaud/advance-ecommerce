@@ -127,6 +127,38 @@
             <li class="{{ $route=='blog.post.add'?'active':'' }}"><a href="{{ route('blog.post.add') }}"><i class="ti-more"></i>Add Blog Post</a></li>
           </ul>
         </li> 
+
+        <li class="treeview {{ $prefix=='/site'?'active':'' }}">
+          <a href="#">
+            <i data-feather="file"></i>
+            <span>Site Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-right pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{ $route=='manage.site.settings'?'active':'' }}"><a href="{{ route('manage.site.settings') }}"><i class="ti-more"></i>Site Settings</a></li>       
+          </ul>
+          <ul class="treeview-menu">
+            <li class="{{ $route=='manage.seo.settings'?'active':'' }}"><a href="{{ route('manage.seo.settings') }}"><i class="ti-more"></i>Seo Settings</a></li>        
+          </ul>
+        </li> 
+
+        <li class="treeview {{ $prefix=='/return'?'active':'' }}">
+          <a href="#">
+            <i data-feather="file"></i>
+            <span>Return Order Request</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-right pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{ $route=='manage.return.request'?'active':'' }}"><a href="{{ route('manage.return.request') }}"><i class="ti-more"></i>Return Request</a></li>       
+          </ul>
+          <ul class="treeview-menu">
+            <li class="{{ $route=='all.return.request'?'active':'' }}"><a href="{{ route('all.return.request') }}"><i class="ti-more"></i>All Request</a></li>        
+          </ul>
+        </li> 
 		 
         <li class="header nav-small-cap">User Interface</li>
 		  
