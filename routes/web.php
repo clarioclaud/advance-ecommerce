@@ -21,6 +21,7 @@ use App\Http\Controllers\User\StripeController;
 use App\Http\Controllers\User\AllUserController;
 use App\Http\Controllers\User\CashController;
 use App\Http\Controllers\User\PaypalController;
+use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\backend\CouponController;
 use App\Http\Controllers\backend\ShippingDivisionController;
 use App\Http\Controllers\backend\OrderController;
@@ -338,3 +339,6 @@ Route::prefix('return')->group(function(){
     Route::get('/admin/return/approve/{id}', [ReturnController::class,'ReturnOrdersApprove'])->name('return.order.approve');
     Route::get('/all/request', [ReturnController::class,'AllReturnOrders'])->name('all.return.request');
 });
+
+//User All Reviews Routes
+Route::post('/review/store', [ReviewController::class,'ReviewStore'])->name('review.store');
