@@ -342,3 +342,11 @@ Route::prefix('return')->group(function(){
 
 //User All Reviews Routes
 Route::post('/review/store', [ReviewController::class,'ReviewStore'])->name('review.store');
+
+//admin review management routes
+Route::prefix('review')->group(function(){
+    Route::get('/pending/list', [ReviewController::class,'PendingReview'])->name('manage.pending.review');
+    Route::get('/pending/approve/{id}', [ReviewController::class,'PendingReviewApprove'])->name('review.approve');
+    Route::get('/publish/list', [ReviewController::class,'PublishReview'])->name('manage.publish.review');
+    Route::get('/delete/{id}', [ReviewController::class,'DeleteReview'])->name('review.delete');
+});

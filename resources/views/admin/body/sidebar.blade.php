@@ -159,6 +159,22 @@
             <li class="{{ $route=='all.return.request'?'active':'' }}"><a href="{{ route('all.return.request') }}"><i class="ti-more"></i>All Request</a></li>        
           </ul>
         </li> 
+
+        <li class="treeview {{ $prefix=='/review'?'active':'' }}">
+          <a href="#">
+            <i data-feather="file"></i>
+            <span>Manage Review</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-right pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{ $route=='manage.pending.review'?'active':'' }}"><a href="{{ route('manage.pending.review') }}"><i class="ti-more"></i>Pending Reviews</a></li>       
+          </ul>
+          <ul class="treeview-menu">
+            <li class="{{ $route=='manage.publish.review'?'active':'' }}"><a href="{{ route('manage.publish.review') }}"><i class="ti-more"></i>Publish Reviews</a></li>        
+          </ul>
+        </li> 
 		 
         <li class="header nav-small-cap">User Interface</li>
 		  
