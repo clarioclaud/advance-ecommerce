@@ -350,3 +350,9 @@ Route::prefix('review')->group(function(){
     Route::get('/publish/list', [ReviewController::class,'PublishReview'])->name('manage.publish.review');
     Route::get('/delete/{id}', [ReviewController::class,'DeleteReview'])->name('review.delete');
 });
+
+//admin product stock management routes
+Route::prefix('stock')->group(function(){
+    Route::get('/products', [ProductController::class,'ProductStockManage'])->name('product.stock');
+    
+});

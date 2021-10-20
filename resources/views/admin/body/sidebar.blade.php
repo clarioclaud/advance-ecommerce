@@ -196,6 +196,19 @@
             <li class="{{ $route=='cancel.orders'?'active':'' }}"><a href="{{ route('cancel.orders') }}"><i class="ti-more"></i>Cancel Orders</a></li>
           </ul>
         </li> 
+
+        <li class="treeview {{ $prefix=='/stock'?'active':'' }}">
+          <a href="#">
+            <i data-feather="file"></i>
+            <span>Store Stock Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-right pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{ $route=='product.stock'?'active':'' }}"><a href="{{ route('product.stock') }}"><i class="ti-more"></i>Stock Products</a></li>
+          </ul>
+        </li> 
 		
         <li class="treeview {{ $prefix=='/reports'?'active':'' }}">
           <a href="#">
