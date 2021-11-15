@@ -26,6 +26,7 @@ use App\Http\Controllers\backend\CouponController;
 use App\Http\Controllers\backend\ShippingDivisionController;
 use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\ReportController;
+use App\Http\Controllers\backend\AdminUserRoleController;
 use App\Http\Controllers\Frontend\HomeBlogController;
 use App\Models\User;
 
@@ -355,4 +356,14 @@ Route::prefix('review')->group(function(){
 Route::prefix('stock')->group(function(){
     Route::get('/products', [ProductController::class,'ProductStockManage'])->name('product.stock');
     
+});
+
+//admin user role management routes
+Route::prefix('adminuserrole')->group(function(){
+    Route::get('/list', [AdminUserRoleController::class,'AdminUserList'])->name('admin.user.role');
+    Route::get('/add', [AdminUserRoleController::class,'AddAdminUser'])->name('add.admin.user');
+    Route::post('/store', [AdminUserRoleController::class,'AdminUserStore'])->name('admin.user.store');
+    Route::get('/edit/{id}', [AdminUserRoleController::class,'EditAdminUser'])->name('edit.admin.user');
+    Route::post('/update', [AdminUserRoleController::class,'UpdateAdminUser'])->name('admin.user.update');
+    Route::get('/delete/{id}', [AdminUserRoleController::class,'DeleteAdminUser'])->name('delete.admin.user');
 });
