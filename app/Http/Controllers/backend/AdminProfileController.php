@@ -12,17 +12,20 @@ use Illuminate\Support\Facades\Hash;
 class AdminProfileController extends Controller
 {
     public function AdminProfile(){
-        $adminData = Admin::find(1);
+        $id = Auth::user()->id;
+        $adminData = Admin::find($id);
         return view('admin.adminprofile', compact('adminData'));
     }
 
     public function AdminProfileEdit(){
-        $editData = Admin::find(1);
+        $id = Auth::user()->id;
+        $editData = Admin::find($id);
         return view('admin.adminprofile_edit', compact('editData'));
     }
 
     public function AdminProfileStore(Request $request){
-        $data = Admin::find(1);
+        $id = Auth::user()->id;
+        $data = Admin::find($id);
         $data['name'] = $request->name;
         $data['email'] = $request->email;
 
@@ -31,7 +34,7 @@ class AdminProfileController extends Controller
             @unlink(public_path('uploads/admin_images/'.$data->profile_photo_path));
             $filename = date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('uploads/admin_images'),$filename);
-            $data['profile_photo_path'] = $filename;
+            $data['profile_photo_path'] = 'uploads/admin_images/'.$filename;
         }
         $data->save();
         $notification = array(
@@ -52,9 +55,9 @@ class AdminProfileController extends Controller
             'password' => 'required|confirmed'
         ]);
 
-        $hashedPassword = Admin::find(1)->password;
+        $hashedPassword = Auth::user()->password;
         if(Hash::check($request->old_password, $hashedPassword)){
-                $data = Admin::find(1);
+                $data = Admin::find(Auth::id());
                 $data['password'] = Hash::make($request->password);
                 $data->save();
                 Auth::logout();

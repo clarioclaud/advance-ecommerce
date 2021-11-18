@@ -80,7 +80,7 @@
                                     @endif
 
                                     @if($item->returnorders == 1)
-                                        <span class="badge btn-seconday">Return Orders</span>
+                                        <span class="badge btn-secondary">Return Orders</span>
                                     @else
                                     @endif
 

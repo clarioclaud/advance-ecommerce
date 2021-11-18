@@ -208,7 +208,8 @@ Route::group(['prefix' => 'user','middleware' => ['user','auth'],'namespace' => 
     //user cancel order page route
     Route::get('/cancel/orders', [AllUserController::class, 'CancelOrders'])->name('cancel.order');
 
-    
+    //order tracking route
+    Route::post('/order/tracking', [AllUserController::class, 'OrderTracking'])->name('order.tracking');
 });
 
 //remove wishlist route
