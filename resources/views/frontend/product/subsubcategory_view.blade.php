@@ -10,7 +10,15 @@
     <div class="breadcrumb-inner">
       <ul class="list-inline list-unstyled">
         <li><a href="#">Home</a></li>
-        <li class='active'>Handbags</li>
+        @foreach($breadsubsubitems as $item)
+        <li class='active'>{{ $item->Category->category_name_en }}</li>
+        @endforeach
+        @foreach($breadsubsubitems as $item)
+        <li class='active'>{{ $item->SubCategory->subcategory_name_en }}</li>
+        @endforeach
+        @foreach($breadsubsubitems as $item)
+        <li class='active'>{{ $item->subsubcategory_name_en }}</li>
+        @endforeach
       </ul>
     </div>
     <!-- /.breadcrumb-inner --> 
@@ -166,6 +174,17 @@
           </div>
         </div>
         
+        @foreach($breadsubsubitems as $item)
+        <span class="badge badge-danger" style="background:#808080;"><b>{{ $item->Category->category_name_en }}</b></span>
+        @endforeach
+        /
+        @foreach($breadsubsubitems as $item)
+        <span class="badge badge-danger" style="background:#808080;"><b>{{ $item->SubCategory->subcategory_name_en }}</b></span>
+        @endforeach
+        /
+        @foreach($breadsubsubitems as $item)
+        <span class="badge badge-danger" style="background:#FF0000;"><b>{{ $item->subsubcategory_name_en }}</b></span>
+        @endforeach
      
         <div class="clearfix filters-container m-t-10">
           <div class="row">
@@ -273,11 +292,11 @@
                         <div class="cart clearfix animate-effect">
                           <div class="action">
                             <ul class="list-unstyled">
-                              <li class="add-cart-button btn-group">
-                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button"> <i class="fa fa-shopping-cart"></i> </button>
-                                <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-                              </li>
-                              <li class="lnk wishlist"> <a class="add-to-cart" href="detail.html" title="Wishlist"> <i class="icon fa fa-heart"></i> </a> </li>
+                                <li class="add-cart-button btn-group">
+                                  <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="ProductView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+                                  <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                </li>
+                                <button  class="btn btn-primary icon" type="button" title="Add Wishlist" id="{{ $product->id }}" onclick="addToWishlist(this.id)"><i class="icon fa fa-heart"></i> </button> 
                               <li class="lnk"> <a class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal"></i> </a> </li>
                             </ul>
                           </div>
@@ -337,11 +356,11 @@
                             <div class="cart clearfix animate-effect">
                               <div class="action">
                                 <ul class="list-unstyled">
-                                  <li class="add-cart-button btn-group">
-                                    <button class="btn btn-primary icon" data-toggle="dropdown" type="button"> <i class="fa fa-shopping-cart"></i> </button>
-                                    <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-                                  </li>
-                                  <li class="lnk wishlist"> <a class="add-to-cart" href="detail.html" title="Wishlist"> <i class="icon fa fa-heart"></i> </a> </li>
+                                    <li class="add-cart-button btn-group">
+                                      <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="ProductView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+                                      <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                    </li>
+                                    <button  class="btn btn-primary icon" type="button" title="Add Wishlist" id="{{ $product->id }}" onclick="addToWishlist(this.id)"><i class="icon fa fa-heart"></i> </button> 
                                   <li class="lnk"> <a class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal"></i> </a> </li>
                                 </ul>
                               </div>

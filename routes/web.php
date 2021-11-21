@@ -368,3 +368,6 @@ Route::prefix('adminuserrole')->group(function(){
     Route::post('/update', [AdminUserRoleController::class,'UpdateAdminUser'])->name('admin.user.update');
     Route::get('/delete/{id}', [AdminUserRoleController::class,'DeleteAdminUser'])->name('delete.admin.user');
 });
+
+///frontend search product routes
+Route::post('/search', [IndexController::class,'ProductSearch'])->name('product.search');

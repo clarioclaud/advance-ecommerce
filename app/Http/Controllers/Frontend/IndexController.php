@@ -11,6 +11,8 @@ use App\Models\Slider;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\MultiImg;
+use App\Models\SubCategory;
+use App\Models\SubsubCategory;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Blog\BlogPost;
 
@@ -130,13 +132,15 @@ class IndexController extends Controller
     public function SubcategoryProduct($subcat_id,$slug){
         $products = Product::where('status',1)->where('subcategory_id',$subcat_id)->orderBy('id','DESC')->paginate(3);
         $category = Category::orderBy('category_name_en','ASC')->get();
-        return view('frontend.product.subcategory_view', compact('products','category'));
+        $breadsubitems = SubCategory::with(['Category'])->where('id',$subcat_id)->get();
+        return view('frontend.product.subcategory_view', compact('products','category','breadsubitems'));
     }
 
     public function SubsubcategoryProduct($subsubcat_id,$slug){
         $products = Product::where('status',1)->where('subsubcategory_id',$subsubcat_id)->orderBy('id','DESC')->paginate(6);
         $category = Category::orderBy('category_name_en','ASC')->get();
-        return view('frontend.product.subsubcategory_view', compact('products','category'));
+        $breadsubsubitems = SubsubCategory::with(['Category','SubCategory'])->where('id',$subsubcat_id)->get();
+        return view('frontend.product.subsubcategory_view', compact('products','category','breadsubsubitems'));
     }
 
     public function ProductViewModal($id){
@@ -155,5 +159,11 @@ class IndexController extends Controller
         ));
     }
 
-
+    public function ProductSearch(Request $request)
+    {
+        $search = $request->search;
+        $products = Product::where('product_name_en','LIKE',"%$search%")->get();
+        $category = Category::orderBy('category_name_en','ASC')->get();
+        return view('frontend.product.search',compact('products','category'));
+    }
 }

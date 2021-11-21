@@ -2,7 +2,7 @@
 @section('content')
 
 @section('title')
-  SubCategory Products
+  Search Products
 @endsection
 
 <div class="breadcrumb">
@@ -10,12 +10,7 @@
     <div class="breadcrumb-inner">
       <ul class="list-inline list-unstyled">
         <li><a href="#">Home</a></li>
-        @foreach($breadsubitems as $item)
-        <li class='active'>{{ $item->Category->category_name_en }}</li>
-        @endforeach
-        @foreach($breadsubitems as $item)
-        <li class='active'>{{ $item->subcategory_name_en }}</li>
-        @endforeach
+        <li class='active'>Handbags</li>
       </ul>
     </div>
     <!-- /.breadcrumb-inner --> 
@@ -171,13 +166,7 @@
           </div>
         </div>
         
-        @foreach($breadsubitems as $item)
-        <span class="badge badge-danger" style="background:#808080;"><b>{{ $item->Category->category_name_en }}</b></span>
-        @endforeach
-        /
-        @foreach($breadsubitems as $item)
-        <span class="badge badge-danger" style="background:#FF0000;"><b>{{ $item->subcategory_name_en }}</b></span>
-        @endforeach
+        <h4><b>Total Search</b> <span class="badge badge-danger" style="background: #FF0000">{{ count($products) }}</span> Items</h4>
      
         <div class="clearfix filters-container m-t-10">
           <div class="row">
@@ -348,11 +337,11 @@
                             <div class="cart clearfix animate-effect">
                               <div class="action">
                                 <ul class="list-unstyled">
-                                    <li class="add-cart-button btn-group">
-                                      <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="ProductView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
-                                      <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-                                    </li>
-                                    <button  class="btn btn-primary icon" type="button" title="Add Wishlist" id="{{ $product->id }}" onclick="addToWishlist(this.id)"><i class="icon fa fa-heart"></i> </button> 
+                                  <li class="add-cart-button btn-group">
+                                    <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="ProductView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+                                    <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                  </li>
+                                  <button  class="btn btn-primary icon" type="button" title="Add Wishlist" id="{{ $product->id }}" onclick="addToWishlist(this.id)"><i class="icon fa fa-heart"></i> </button> 
                                   <li class="lnk"> <a class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal"></i> </a> </li>
                                 </ul>
                               </div>
@@ -394,7 +383,7 @@
             <div class="text-right">
               <div class="pagination-container">
                 <ul class="list-inline list-unstyled">
-                  {{ $products->links() }}
+                  
                 </ul>
                 <!-- /.list-inline --> 
               </div>
