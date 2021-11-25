@@ -21,6 +21,7 @@ class CreateReviewsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('summary');
             $table->text('review');
+            $table->integer('quality')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();
         });
