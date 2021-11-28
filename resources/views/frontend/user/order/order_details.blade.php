@@ -110,9 +110,15 @@
                                     <td class="col-md-1"><label for="">Size</label></td>
                                     <td class="col-md-2"><label for="">Quantity</label></td>
                                     <td class="col-md-2"><label for="">Price</label></td>
+                                    <td class="col-md-1"><label for="">Download</label></td>
                                 </tr>
-                                
+                               
+
                                 @foreach($orderitem as $item)
+
+                                @php
+                                    $file = App\Models\Product::where('id',$item->product_id)->first();
+                                @endphp
                                 <tr>
                                     <td class="col-md-2"><label for=""><img src="{{ asset($item->product->product_thumbnail) }}" height="50px" width="50px"></label></td>
                                     <td class="col-md-2"><label for="">{{ $item->product->product_name_en }}</label></td>
@@ -125,6 +131,15 @@
                                     @endif
                                     <td class="col-md-2"><label for="">{{ $item->qty }}</label></td>
                                     <td class="col-md-2"><label for="">${{ $item->price }} (${{ $item->price}} * {{$item->qty }})</label></td>
+                                    <td class="col-md-1">
+                                        @if($order->status == 'pending')
+                                            <strong><span class="badge badge-pill badge-success" style="background:#418DB9">No File</span></strong>
+                                        @elseif($order->status == 'confirm')
+                                            <a target="_blank" href="{{ asset('uploads/pdf/'.$file->digital_file) }}">
+                                            <strong><span class="badge badge-pill badge-success" style="background:#FF0000">Download Ready</span></strong>
+                                            </a>
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
