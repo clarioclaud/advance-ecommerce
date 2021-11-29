@@ -2,21 +2,15 @@
 @section('content')
 
 @section('title')
-  SubCategory Products
+  Shop Page
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div class="breadcrumb">
   <div class="container">
     <div class="breadcrumb-inner">
       <ul class="list-inline list-unstyled">
-        <li><a href="#">Home</a></li>
-        @foreach($breadsubitems as $item)
-        <li class='active'>{{ $item->Category->category_name_en }}</li>
-        @endforeach
-        @foreach($breadsubitems as $item)
-        <li class='active'>{{ $item->subcategory_name_en }}</li>
-        @endforeach
+        <li><a href="#">Shop</a></li>
+       
       </ul>
     </div>
     <!-- /.breadcrumb-inner --> 
@@ -24,8 +18,12 @@
   <!-- /.container --> 
 </div>
 <!-- /.breadcrumb -->
+
+
 <div class="body-content outer-top-xs">
   <div class='container'>
+  <form action="{{ route('shop.filter') }}" method="post">
+      @csrf
     <div class='row'>
       <div class='col-md-3 sidebar'> 
         <!-- ================================== TOP NAVIGATION ================================== -->
@@ -38,29 +36,57 @@
               <h3 class="section-title">shop by</h3>
               <div class="widget-header">
                 <h4 class="widget-title">@if(session()->get('language') == 'hindi') श्रेणियाँ  @else Category @endif</h4>
-              </div>
+              </div>             
               <div class="sidebar-widget-body">
                 <div class="accordion">
+                    @if(!empty($_GET['category']))
+                        @php
+                            $filterCat = explode(',',$_GET['category']);
+                        @endphp
+                    @endif
                 @foreach($category as $cat)
                   <div class="accordion-group">
-                    <div class="accordion-heading"> <a href="#collapseOne{{ $cat->id }}" data-toggle="collapse" class="accordion-toggle collapsed"> 
-                    @if(session()->get('language') == 'hindi') {{ $cat->category_name_hin }}   @else  {{ $cat->category_name_en }} @endif
-                    </a> </div>
-                    <!-- /.accordion-heading -->
-                    <div class="accordion-body collapse" id="collapseOne{{ $cat->id }}" style="height: 0px;">
-                      <div class="accordion-inner">
-                      @php
-                        $subcategory = App\Models\SubCategory::where('category_id',$cat->id)->orderBy('subcategory_name_en','ASC')->get();
-                      @endphp
-                      @foreach($subcategory as $subcat)
-                        <ul>
-                          <li><a href="{{ url('/subcategory/product/'.$subcat->id.'/'.$subcat->subcategory_slug_en) }}">@if(session()->get('language') == 'hindi') {{ $subcat->subcategory_name_hin }}   @else  {{ $subcat->subcategory_name_en }} @endif</a></li>
-            
-                        </ul>
-                      @endforeach
-                      </div>
-                      <!-- /.accordion-inner --> 
+                    <div class="accordion-heading"> 
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="category[]" value="{{ $cat->category_slug_en }}" @if(!empty($filterCat) && in_array($cat->category_slug_en,$filterCat)) checked @endif  onchange="this.form.submit()">
+                        @if(session()->get('language') == 'hindi') {{ $cat->category_name_hin }}   @else  {{ $cat->category_name_en }} @endif
+                    </label>
+                    
                     </div>
+                    <!-- /.accordion-heading -->
+                    
+                    <!-- /.accordion-body --> 
+                  </div>
+                  <!-- /.accordion-group -->
+                @endforeach
+                </div>
+                <!-- /.accordion --> 
+              </div>
+              <!-- /.sidebar-widget-body --> 
+            
+
+            
+              <div class="widget-header">
+                <h4 class="widget-title">@if(session()->get('language') == 'hindi') श्रेणियाँ  @else Brand @endif</h4>
+              </div>             
+              <div class="sidebar-widget-body">
+                <div class="accordion">
+                    @if(!empty($_GET['brand']))
+                        @php
+                            $filterBrand = explode(',',$_GET['brand']);
+                        @endphp
+                    @endif
+                @foreach($brands as $brand)
+                  <div class="accordion-group">
+                    <div class="accordion-heading"> 
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="brand[]" value="{{ $brand->brand_slug_en }}" @if(!empty($filterBrand) && in_array($brand->brand_slug_en,$filterBrand)) checked @endif  onchange="this.form.submit()">
+                        @if(session()->get('language') == 'hindi') {{ $brand->brand_name_hin }}   @else  {{ $brand->brand_name_en }} @endif
+                    </label>
+                    
+                    </div>
+                    <!-- /.accordion-heading -->
+                    
                     <!-- /.accordion-body --> 
                   </div>
                   <!-- /.accordion-group -->
@@ -172,14 +198,7 @@
           </div>
         </div>
         
-        @foreach($breadsubitems as $item)
-        <span class="badge badge-danger" style="background:#808080;"><b>{{ $item->Category->category_name_en }}</b></span>
-        @endforeach
-        /
-        @foreach($breadsubitems as $item)
-        <span class="badge badge-danger" style="background:#FF0000;"><b>{{ $item->subcategory_name_en }}</b></span>
-        @endforeach
-     
+        
         <div class="clearfix filters-container m-t-10">
           <div class="row">
             <div class="col col-sm-6 col-md-2">
@@ -247,8 +266,67 @@
           <div id="myTabContent" class="tab-content category-list">
             <div class="tab-pane active " id="grid-container">
               <div class="category-product">
-                <div class="row" id="grid_view_page">
-                 @include('frontend.product.grid_view_page')
+                <div class="row">
+                  @forelse($products as $product)
+                  <div class="col-sm-6 col-md-4 wow fadeInUp">
+                    <div class="products">
+                      <div class="product">
+                        <div class="product-image">
+                          <div class="image"> <a href="{{ url('product/detail/'.$product->id.'/'.$product->product_slug_en) }}"><img  src="{{ asset($product->product_thumbnail) }}" alt=""></a> </div>
+                          <!-- /.image -->
+                          
+                          @php
+                            $amout = $product->selling_price - $product->discount_price;
+                            $discount = ($amout/$product->selling_price)*100;
+                          @endphp
+                          @if($product->discount_price == NULL)
+                            <div class="tag new"><span>new</span></div>
+                          @else
+                            <div class="tag hot"><span>{{ round($discount) }}% </span></div>
+                          @endif
+                        </div>
+                        <!-- /.product-image -->
+                        
+                        <div class="product-info text-left">
+                          <h3 class="name"><a href="{{ url('product/detail/'.$product->id.'/'.$product->product_slug_en) }}"> 
+                          @if(session()->get('language')=='hindi')   {{ $product->product_name_hin }} @else   {{ $product->product_name_en }} @endif
+                          </a></h3>
+                          <div class="rating rateit-small"></div>
+                          <div class="description"></div>
+                          @if($product->discount_price == NULL)
+                          <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span> </div>
+                          @else
+                          <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$ {{ $product->selling_price }}</span> </div>
+                          @endif
+                          <!-- /.product-price --> 
+                          
+                        </div>
+                        <!-- /.product-info -->
+                        <div class="cart clearfix animate-effect">
+                          <div class="action">
+                            <ul class="list-unstyled">
+                                <li class="add-cart-button btn-group">
+                                  <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="ProductView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+                                  <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                </li>
+                                <button  class="btn btn-primary icon" type="button" title="Add Wishlist" id="{{ $product->id }}" onclick="addToWishlist(this.id)"><i class="icon fa fa-heart"></i> </button> 
+                              <li class="lnk"> <a class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal"></i> </a> </li>
+                            </ul>
+                          </div>
+                          <!-- /.action --> 
+                        </div>
+                        <!-- /.cart --> 
+                      </div>
+                      <!-- /.product --> 
+                      
+                    </div>
+                    <!-- /.products --> 
+                  </div>
+                  @empty
+                    <h5 class="text-danger text-center">No Products Found</h5>
+                  @endforelse
+                  
+                  <!-- /.item -->
                   
 
                 </div>
@@ -260,39 +338,94 @@
             <!-- /.tab-pane -->
             
             <div class="tab-pane "  id="list-container">
-              <div class="category-product" id="list_view_page">
-                @include('frontend.product.list_view_page')
-              
+              <div class="category-product">
+                
+              @forelse($products as $product) 
+                <div class="category-product-inner wow fadeInUp">
+                  <div class="products">
+                    <div class="product-list product">
+                      <div class="row product-list-row">
+                        <div class="col col-sm-4 col-lg-4">
+                          <div class="product-image">
+                            <div class="image"> <img src="{{ asset($product->product_thumbnail) }}" alt=""> </div>
+                          </div>
+                          <!-- /.product-image --> 
+                        </div>
+                        <!-- /.col -->
+                        <div class="col col-sm-8 col-lg-8">
+                          <div class="product-info">
+                            <h3 class="name"><a href="{{ url('product/detail/'.$product->id.'/'.$product->product_slug_en) }}">
+                            @if(session()->get('language')=='hindi')   {{ $product->product_name_hin }} @else   {{ $product->product_name_en }} @endif</a></h3>
+                            <div class="rating rateit-small"></div>
+                            @if($product->discount_price == NULL)
+                            <div class="product-price"> <span class="price"> $ {{ $product->selling_price }} </span>  </div>
+                            @else
+                            <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$  {{ $product->selling_price }}</span> </div>
+                            @endif
+                            <!-- /.product-price -->
+                            <div class="description m-t-10">
+                            @if(session()->get('language')=='hindi')   {{ $product->short_descp_hin }} @else   {{ $product->short_descp_en }} @endif
+                            </div>
+                            <div class="cart clearfix animate-effect">
+                              <div class="action">
+                                <ul class="list-unstyled">
+                                    <li class="add-cart-button btn-group">
+                                      <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="ProductView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+                                      <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                    </li>
+                                    <button  class="btn btn-primary icon" type="button" title="Add Wishlist" id="{{ $product->id }}" onclick="addToWishlist(this.id)"><i class="icon fa fa-heart"></i> </button> 
+                                  <li class="lnk"> <a class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal"></i> </a> </li>
+                                </ul>
+                              </div>
+                              <!-- /.action --> 
+                            </div>
+                            <!-- /.cart --> 
+                            
+                          </div>
+                          <!-- /.product-info --> 
+                        </div>
+                        <!-- /.col --> 
+                      </div>
+                      <!-- /.product-list-row -->
+                          @php
+                            $amout = $product->selling_price - $product->discount_price;
+                            $discount = ($amout/$product->selling_price)*100;
+                          @endphp
+                          @if($product->discount_price == NULL)
+                            <div class="tag new"><span>new</span></div>
+                          @else
+                            <div class="tag hot"><span>{{ round($discount) }}% </span></div>
+                          @endif
+                    </div>
+                    <!-- /.product-list --> 
+                  </div>
+                  <!-- /.products --> 
+                </div>
+                <!-- /.category-product-inner -->
+                @empty
+                    <h5 class="text-danger text-center">No Products Found</h5>
+                @endforelse
               </div>
               <!-- /.category-product --> 
             </div>
             <!-- /.tab-pane #list-container --> 
           </div>
           <!-- /.tab-content -->
-          <div class="clearfix filters-container">
-            <div class="text-right">
-              <div class="pagination-container">
-                <ul class="list-inline list-unstyled">
-                  
-                </ul>
-                <!-- /.list-inline --> 
-              </div>
-              <!-- /.pagination-container --> </div>
-            <!-- /.text-right --> 
+         
             
-          </div>
-          <!-- /.filters-container --> 
+              
+                
+                  {{ $products->appends($_GET)->links('vendor.pagination.custom') }}
+                
+               
+              
+            
           
         </div>
         <!-- /.search-result-container --> 
         
       </div>
       <!-- /.col --> 
-
-      <div class="ajax-loadmore-product text-center" style="display:none">
-        <img src="{{ asset('frontend/assets/images/loader.svg') }}" style="width:120px;height:120px;">
-      </div>
-
     </div>
     <!-- /.row --> 
     <!-- ============================================== BRANDS CAROUSEL ============================================== -->
@@ -300,41 +433,11 @@
     <!-- /.logo-slider --> 
     <!-- ============================================== BRANDS CAROUSEL : END ============================================== --> </div>
   <!-- /.container --> 
-  
+  </form>
 </div>
 <!-- /.body-content --> 
 
-<script>
-  function loadmoreProduct(page){
-    $.ajax({
-      type: "get",
-      url: "?page="+page,
-      beforeSend: function(response){
-        $('.ajax-loadmore-product').show();
-      }
-    })
-    .done(function(data){
-      if(data.grid_view == " " || data.list_view == " "){
-        return;
-      }
-      $('.ajax-loadmore-product').hide();
-      $('#grid_view_page').append(data.grid_view);
-      $('#list_view_page').append(data.list_view);
-    })
 
-    .fail(function(){
-      alert('Something Went Wrong');
-    })
-  }
-
-  var page = 1;
-  $(window).scroll(function(){
-    if ($(window).scrollTop() +$(window).height() >= $(document).height()) {
-      page ++;
-      loadmoreProduct(page);
-    }
-  });
-</script>
 
 
 

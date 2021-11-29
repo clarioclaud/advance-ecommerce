@@ -341,7 +341,7 @@ jQuery("[data-toggle='tooltip']").tooltip();
                 data: {search:text},
                 url: site_url + "search-product",
                 method: 'post',
-                beforSend: function(request){
+                beforeSend: function(request){
                     return request.setRequestHeader('X_CSRF-TOKEN',("meta[name='csrf-token']"))
                 },
                 success: function(result){

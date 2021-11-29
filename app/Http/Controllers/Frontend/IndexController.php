@@ -129,10 +129,17 @@ class IndexController extends Controller
         return view('frontend.tags.product_tags_view', compact('products','category'));
     }
 
-    public function SubcategoryProduct($subcat_id,$slug){
+    public function SubcategoryProduct(Request $request,$subcat_id,$slug){
         $products = Product::where('status',1)->where('subcategory_id',$subcat_id)->orderBy('id','DESC')->paginate(3);
         $category = Category::orderBy('category_name_en','ASC')->get();
         $breadsubitems = SubCategory::with(['Category'])->where('id',$subcat_id)->get();
+        //load product with ajax
+        if ($request->ajax) {
+            $grid_view = view('frontend.product.grid_view_page',compact('products'))->render();
+            $list_view = view('frontend.product.list_view_page',compact('products'))->render();
+            return response()->json(['grid_view' => $grid_view,'list_view' => $list_view]);
+        }
+        //end load product with ajax
         return view('frontend.product.subcategory_view', compact('products','category','breadsubitems'));
     }
 

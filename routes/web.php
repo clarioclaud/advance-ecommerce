@@ -28,7 +28,9 @@ use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\ReportController;
 use App\Http\Controllers\backend\AdminUserRoleController;
 use App\Http\Controllers\Frontend\HomeBlogController;
+use App\Http\Controllers\Frontend\ShopController;
 use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -374,3 +376,7 @@ Route::post('/search', [IndexController::class,'ProductSearch'])->name('product.
 
 //advance search product route
 Route::post('search-product', [IndexController::class, 'SearchProduct']);
+
+///Shop page route
+Route::get('/shop', [ShopController::class, 'ShopProduct'])->name('shop.page');
+Route::post('/shop/filter', [ShopController::class, 'ShopProductFilter'])->name('shop.filter');
